@@ -12,7 +12,8 @@ class FileTCPServer(socketserver.BaseRequestHandler):
         # According to the protocol, this is the name of the file to be accessed
         self.data = self.request.recv(1024).strip()
 
-        print("Request for {}".format(self.data))
+        print("Request for {}, handled by {}, child of {}".format(self.data,
+            os.getpid(), os.getppid()))
 
         if os.path.isfile(self.data):
             nature = "SUCCESS"
@@ -32,9 +33,15 @@ class FileTCPServer(socketserver.BaseRequestHandler):
 
         self.request.shutdown(socket.SHUT_RDWR)
 
+# Server which forks and lets the child handle each client
+class ForkingTCPServer(socketserver.ForkingMixIn, socketserver.TCPServer):
+    pass
+
 if __name__ == "__main__":
     HOST, PORT = "localhost", 8042
 
-    with socketserver.TCPServer((HOST, PORT), FileTCPServer) as server:
+    print("Server PID: {}".format(os.getpid()))
+
+    with ForkingTCPServer((HOST, PORT), FileTCPServer) as server:
 
         server.serve_forever()
