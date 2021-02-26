@@ -2,7 +2,7 @@ import socket, socketserver
 from sys import argv, exit, stderr
 import os
 
-PORTNO = 8042
+PORTNO = os.environ['SERVICE_PORT']
 
 BUFSIZE = 4096
 
@@ -38,7 +38,13 @@ class ForkingTCPServer(socketserver.ForkingMixIn, socketserver.TCPServer):
     pass
 
 if __name__ == "__main__":
-    HOST, PORT = "localhost", 8042
+
+    n = len(argv)
+    if argv != 2:
+        print("usage: python3 server.py <port-no>", file = stderr)
+        exit(1)
+
+    HOST, PORT = "localhost", int(argv[1])
 
     print("Server PID: {}".format(os.getpid()))
 
