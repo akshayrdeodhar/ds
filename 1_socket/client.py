@@ -3,7 +3,7 @@ from sys import argv, exit, stderr
 
 BUFSIZE = 4096
 
-PORTNO = 8042
+PORTNO = 30042
 
 if __name__ == "__main__":
 

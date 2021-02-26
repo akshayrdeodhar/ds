@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ds-2021-socket-deployment
+  labels:
+    app: ds-2021-socket
+
+spec: 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ds-2021-socket
+  template:
+    metadata:
+      labels:
+        app: ds-2021-socket
+    spec:
+      containers:
+      - name: ds-2021-socket
+        image: brick42/ds-2021-socket
+        env: 
+        - name: SERVICE_PORT
+          value: "8042"
+        ports:
+          - containerPort: 8042
+            protocol: TCP
+      
+      
+          

@@ -21,6 +21,7 @@ class FileTCPServer(socketserver.BaseRequestHandler):
         if os.path.isfile(self.data):
             nature = "SUCCESS"
         else:
+            print("Failed")
             nature = "FAILURE"
 
         self.request.send(bytes(nature, "UTF-8"))
@@ -33,6 +34,8 @@ class FileTCPServer(socketserver.BaseRequestHandler):
                     self.request.send(bytes(data, "UTF-8"))
                     if len(data) < BUFSIZE:
                         break
+
+        else:
 
         self.request.shutdown(socket.SHUT_RDWR)
 
