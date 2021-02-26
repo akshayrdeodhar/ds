@@ -2,13 +2,16 @@ import socket, socketserver
 from sys import argv, exit, stderr
 import os
 
-PORTNO = os.environ['SERVICE_PORT']
+PORTNO = int(os.environ['SERVICE_PORT'])
 
 BUFSIZE = 4096
 
 class FileTCPServer(socketserver.BaseRequestHandler):
 
     def handle(self):
+
+        print("Handling Request")
+
         # According to the protocol, this is the name of the file to be accessed
         self.data = self.request.recv(1024).strip()
 
@@ -39,12 +42,7 @@ class ForkingTCPServer(socketserver.ForkingMixIn, socketserver.TCPServer):
 
 if __name__ == "__main__":
 
-    n = len(argv)
-    if argv != 2:
-        print("usage: python3 server.py <port-no>", file = stderr)
-        exit(1)
-
-    HOST, PORT = "localhost", int(argv[1])
+    HOST, PORT = "0.0.0.0", PORTNO
 
     print("Server PID: {}".format(os.getpid()))
 

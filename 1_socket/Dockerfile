@@ -1,4 +1,5 @@
 FROM python
 WORKDIR ./
 COPY server.py preamble.txt ./
-CMD ["python3", "server.py", "8042"]
+ENV SERVICE_PORT=8042
+CMD ["python", "server.py"]
